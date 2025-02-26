@@ -235,6 +235,91 @@ function getViewerConfiguration() {
 function webViewerLoad() {
   const config = getViewerConfiguration();
 
+  // Add event listeners for arrow buttons after the PDF viewer is initialized
+  document.addEventListener("DOMContentLoaded", function () {
+    const prevButton = document.querySelector(".arrow-button:first-of-type");
+    const nextButton = document.querySelector(".arrow-button:last-of-type");
+    const pageSlider = document.getElementById("page-slider");
+    const pageNumber = document.getElementById("page-number");
+    const totalPages = document.getElementById("total-pages");
+  
+    // Ensure PDFViewerApplication is initialized before attaching event listeners
+    PDFViewerApplication.initializedPromise.then(function () {
+      // Update the slider and total pages when the PDF is loaded
+      PDFViewerApplication.eventBus.on("pagesloaded", function () {
+        const pagesCount = PDFViewerApplication.pagesCount;
+        pageSlider.max = pagesCount;
+        totalPages.textContent = pagesCount;
+      });
+
+      // Function to get the current spread mode
+      function getSpreadMode() {
+        return PDFViewerApplication.pdfViewer.spreadMode;
+      }
+
+      // Handle arrow button clicks
+      prevButton.addEventListener("click", function () {
+        const spreadMode = getSpreadMode();
+        let newPage = PDFViewerApplication.page;
+        if (spreadMode === SpreadMode.NONE) {
+          // Single-page mode: move to the previous page
+          if (newPage > 1) {
+            newPage--;
+          }
+        } else if (spreadMode === SpreadMode.ODD) {
+          // Double-page mode: move to the previous spread (2 pages)
+          if (newPage > 2) {
+            newPage -= 2;
+          } else {
+            newPage = 1; // Ensure we don't go below page 1
+          }
+        }
+        if (newPage !== PDFViewerApplication.page) {
+          PDFViewerApplication.page = newPage;
+          pageSlider.value = newPage;
+          pageNumber.textContent = newPage;
+        }
+      });
+
+      nextButton.addEventListener("click", function () {
+        const spreadMode = getSpreadMode();
+        let newPage = PDFViewerApplication.page;
+        if (spreadMode === SpreadMode.NONE) {
+          // Single-page mode: move to the next page
+          if (newPage < PDFViewerApplication.pagesCount) {
+            newPage++;
+          }
+        } else if (spreadMode === SpreadMode.ODD) {
+          // Double-page mode: move to the next spread (2 pages)
+          if (newPage < PDFViewerApplication.pagesCount - 1) {
+            newPage += 2;
+          } else {
+            newPage = PDFViewerApplication.pagesCount; // Ensure we don't go beyond the last page
+          }
+        }
+        if (newPage !== PDFViewerApplication.page) {
+          PDFViewerApplication.page = newPage;
+          pageSlider.value = newPage;
+          pageNumber.textContent = newPage;
+        }
+      });
+  
+      // Handle slider input
+      pageSlider.addEventListener("input", function () {
+        const page = parseInt(pageSlider.value, 10);
+        if (page !== PDFViewerApplication.page) {
+          PDFViewerApplication.page = page;
+          pageNumber.textContent = page;
+        }
+      });
+      // Update the slider and page number when the page changes
+      PDFViewerApplication.eventBus.on("pagechanging", function (evt) {
+        pageSlider.value = evt.pageNumber;
+        pageNumber.textContent = evt.pageNumber;
+      });
+    });
+  });
+
   if (typeof PDFJSDev !== "undefined" && PDFJSDev.test("GENERIC")) {
     // Give custom implementations of the default viewer a simpler way to
     // set various `AppOptions`, by dispatching an event once all viewer

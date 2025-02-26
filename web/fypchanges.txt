@@ -1,0 +1,21 @@
+Updated: 13/02/2025
+Default scrollmode:
+ui_utils.js: const ScrollMode: swap value of PAGE and VERTICAL
+
+SpreadMode button:
+viewer.html 321-333: Display on toolbar
+viewer.css 1793-1796: Hide text label
+
+Arrow button:
+viewer.html 475-486: Display on both sides of PDF content
+viewer.css 1754-1791
+viewer.js 240-241: const prevButton, nextButton
+          255-258: function getSpreadMode
+          260-305: Operation of arrow buttons depends on spreadMode
+
+Page-slider:
+viewer.html 489-495: Display on the bottom of screen
+viewer.css 1728-1752
+viewer.js 242-244: const pageSlider, pageNumber, totalPages
+          246-253: initialise page number shown on slider
+          307-319: Operation of Slider

@@ -298,7 +298,7 @@ body {
   inset-inline-start: calc(-1 * var(--sidebar-width));
   width: var(--sidebar-width);
   visibility: hidden;
-  z-index: 1;
+  z-index: 2;
   font: message-box;
   border-top: 1px solid transparent;
   border-inline-end: var(--doorhanger-border-color-whcm);
@@ -1604,6 +1604,12 @@ dialog :link {
       padding-inline-start: 3px;
       flex: none;
     }
+    #spreadNone::before {
+      mask-image: var(--secondaryToolbarButton-spreadNone-icon);
+    }
+    #spreadOdd::before {
+      mask-image: var(--secondaryToolbarButton-spreadOdd-icon);
+    }
   }
 
   #loadingBar {
@@ -1717,6 +1723,80 @@ dialog :link {
   #documentProperties::before {
     mask-image: var(--secondaryToolbarButton-documentProperties-icon);
   }
+}
+
+/* Slider styling*/
+/* Slider container */
+#slider-container {
+  position: fixed;
+  bottom: 0px; /* avoid covering the horizontal scrollbar */
+  left: 0;
+  width: 100%;
+  background: #f8f9fa;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+  z-index: 1000; /* Ensure it stays above other content */
+}
+/* Slider bar */
+#page-slider {
+  width: 70%; /* Adjust slider width */
+  margin: 0 20px;
+}
+/* Page number styling */
+#page-number, #total-pages {
+  font-weight: bold;
+  margin-left: 5px;
+}
+/* End of slider styling */
+
+/* Arrow button styling */
+.arrow-button {
+  position: fixed;
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust for vertical centering */
+  height: 100%;
+  width: 100px;
+  z-index: 1; /* avoid covering secondary toolbar */
+  background-color: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.arrow-button:hover {
+  opacity: 0.8; /* visible on hover */
+}
+/* Arrow icon styling */
+.arrow-button svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--main-color);
+  transition: transform 0.2s ease-in-out;
+}
+.arrow-button:hover svg {
+  transform: scale(3); /* Slightly larger icon on hover */
+}
+/* Arrow button position */
+.arrow-button:first-of-type {
+  left: 0; /* Position the first button on the left */
+}
+.arrow-button:last-of-type {
+  right: 0; /* Position the second button on the right */
+}
+/* End of arrow button styling */
+
+/* Hide the text label for the spreadMode buttons on toolbar*/
+#editorModeButtons #spreadModeButtons button span {
+  display: none; /* Hide the text label */
+}
+
+#scrollModeButtons, #secondaryToolbar #spreadModeButtons {
+  display: none;
 }
 
 @media all and (max-width: 840px) {

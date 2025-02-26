@@ -54,10 +54,10 @@ const TextLayerMode = {
 
 const ScrollMode = {
   UNKNOWN: -1,
-  VERTICAL: 0, // Default value.
+  VERTICAL: 3,
   HORIZONTAL: 1,
   WRAPPED: 2,
-  PAGE: 3,
+  PAGE: 0,  //New default value
 };
 
 const SpreadMode = {

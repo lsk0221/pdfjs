@@ -87,7 +87,8 @@ See https://github.com/adobe-type-tools/cmap-resources
           "web-preferences": "./genericcom.js",
           "web-print_service": "./pdf_print_service.js",
           "web-secondary_toolbar": "./secondary_toolbar.js",
-          "web-toolbar": "./toolbar.js"
+          "web-toolbar": "./toolbar.js",
+          "web-pageSlider": "./pageSlider.js"
         }
       }
     </script>
@@ -317,7 +318,19 @@ See https://github.com/adobe-type-tools/cmap-resources
                       </div>
                     </div>
                   </div>
+                  <!--Display single/double page button on toolbar-->
+                  <div id="spreadModeButtons" class="toolbarButtonWithContainer">
+                    <button id="spreadNone" class="toolbarButton labeled toggled" type="button" title="Do not join page spreads" tabindex="0" data-l10n-id="pdfjs-spread-none-button" role="radio" aria-checked="true">
+                      <span data-l10n-id="pdfjs-spread-none-button-label">spreadNone</span>
+                    </button>
+                  </div>
+                  <div id="spreadModeButtons" class="toolbarButtonWithContainer">
+                    <button id="spreadOdd" class="toolbarButton labeled" type="button" title="Join page spreads starting with odd-numbered pages" tabindex="0" data-l10n-id="pdfjs-spread-odd-button" role="radio" aria-checked="false">
+                      <span data-l10n-id="pdfjs-spread-odd-button-label">spreadOdd</span>
+                    </button>
+                  </div>
                 </div>
+                <!--End of new code-->
 
                 <div id="editorModeSeparator" class="verticalToolbarSeparator"></div>
 
@@ -417,7 +430,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                         </button>
                       </div>
 
-                      <div class="horizontalToolbarSeparator"></div>
+                      <!--<div class="horizontalToolbarSeparator"></div>-->
 
                       <div id="spreadModeButtons" role="radiogroup">
                         <button id="spreadNone" class="toolbarButton labeled toggled" type="button" title="Do not join page spreads" tabindex="0" data-l10n-id="pdfjs-spread-none-button" role="radio" aria-checked="true">
@@ -436,7 +449,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                         <span data-l10n-id="pdfjs-image-alt-text-settings-button-label">Image alt text settings</span>
                       </button>
 
-                      <div class="horizontalToolbarSeparator"></div>
+                      <!--<div class="horizontalToolbarSeparator"></div>-->
 
                       <button id="documentProperties" class="toolbarButton labeled" type="button" title="Document Properties…" tabindex="0" data-l10n-id="pdfjs-document-properties-button" aria-controls="documentPropertiesDialog">
                         <span data-l10n-id="pdfjs-document-properties-button-label">Document Properties…</span>
@@ -455,9 +468,32 @@ See https://github.com/adobe-type-tools/cmap-resources
           </div>
         </div>
 
+
         <div id="viewerContainer" tabindex="0">
-          <div id="viewer" class="pdfViewer"></div>
+          <div id="viewer" class="pdfViewer">
+          </div>
+          <!--New flip-page arrow button on both sides of pdf content-->
+          <button class="arrow-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path fill="currentColor" d="M16 5v14l-11-7z" />
+            </svg>
+          </button>
+          <button class="arrow-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path fill="currentColor" d="M8 5v14l11-7z" />
+            </svg>
+          </button>
+          <!--end of arrow button-->
         </div>
+
+        <!--page-slider-->
+        <div id="slider-container">
+          <span id="page-number">1</span>
+          <input type="range" id="page-slider" min="1" max="1" step="1" value="1">
+          <span id="total-pages">1</span>
+        </div>
+        <!--end of page-slider-->
+
       </div> <!-- mainContainer -->
 
       <div id="dialogContainer">
@@ -703,6 +739,7 @@ See https://github.com/adobe-type-tools/cmap-resources
       </div> <!-- editorUndoBar -->
 
     </div> <!-- outerContainer -->
+    
     <div id="printContainer"></div>
   </body>
 </html>

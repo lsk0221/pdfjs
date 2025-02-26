@@ -59,7 +59,6 @@ function getViewerConfiguration() {
 
 function webViewerLoad() {
   const config = getViewerConfiguration();
-
   PDFViewerApplication.run(config);
 }
 
